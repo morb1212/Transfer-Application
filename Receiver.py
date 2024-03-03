@@ -43,6 +43,7 @@ def server_function():
     server_socket.close()
 
 
+
 # Run server function directly when this file is executed
 if __name__ == "__main__":
     server_function()
