@@ -1,39 +1,53 @@
 import socket
+import time
 
-def server_function():
+
+def client_function():
     # Define host and port
     HOST = '127.0.0.1'
-    PORT = 12345
+    PORT = 12346
 
-    # Define file path
-    FILE_PATH = 'path/to/your/file.txt'  # Update this with the path to your file
+    # Define file path to save the received file
+    SAVE_PATH = 'received_file.txt'  # Specify the path where you want to save the received file
 
     # Create a socket object
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    # Bind the socket to the host and port
-    server_socket.bind((HOST, PORT))
+    # Connect to the server
+    client_socket.connect((HOST, PORT))
+    s = input("do you need the file? Y / N")
+    print(s)
+    while s!="N":
+        if s=="Y":
+            start_time = time.time()  # Start time measurement
+            # Receive data from the server
+            file_data = b''
+            while True:
+                chunk = client_socket.recv(1024)
+                if not chunk:
+                    break
+                file_data += chunk
 
-    # Listen for incoming connections
-    server_socket.listen()
+            end_time = time.time()  # End time measurement
+            transfer_time = end_time - start_time
 
-    print("Server is listening...")
+            print("File transfer completed")
+            print(f"Transfer time: {transfer_time} seconds")
 
-    # Accept a client connection
-    client_socket, addr = server_socket.accept()
-    print(f"Connected to {addr}")
+            # Save the received file data to a file
+            with open(SAVE_PATH, 'wb') as file:
+                file.write(file_data)
+        else:
+            print("unknown")
+        s = input("do you need the file? Y / N")
+        print(s)
 
-    # Open the file and read its contents
-    with open(FILE_PATH, 'rb') as file:
-        file_data = file.read()
 
-    # Send the file data to the client
-    client_socket.sendall(file_data)
+    if s == "N":
+        print("didn't send")
+        # Close the connection
+        client_socket.close()
 
-    # Close the connection
-    client_socket.close()
-    server_socket.close()
-
-# Run server function directly when this file is executed
+# Run client function directly when this file is executed
 if __name__ == "__main__":
-    server_function()
+    client_function()
