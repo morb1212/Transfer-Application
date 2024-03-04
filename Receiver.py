@@ -1,6 +1,7 @@
 import socket
 import time
 
+
 def server_function():
     # Define host and port
     HOST = '127.0.0.1'
@@ -23,33 +24,32 @@ def server_function():
     print("Sender connected, beginning to receive file...")
 
     while True:
-            # Receive file name from the sender
-            file_name = client_socket.recv(1024).decode()
+        # Receive file name from the sender
+        file_name = client_socket.recv(1024).decode()
 
-            if not file_name:
-                # If the received data is empty, it means the client has disconnected
-                print("Sender sent exit message.")
-                break
+        if not file_name:
+            # If the received data is empty, it means the client has disconnected
+            print("Sender sent exit message.")
+            break
 
-            print(f"Receiving file: {file_name}")
-            start_time = time.time()  # Start time measurement
+        print(f"Receiving file: {file_name}")
+        start_time = time.time()  # Start time measurement
 
+        # Receive file data from the sender
+        with open(file_name, 'rb') as file:
+            file_data = file.read()  # Read the content of the file
+            file_data_size = len(file_data)
 
-            # Receive file data from the sender
-            with open(file_name, 'rb') as file:
-                file_data = file.read()  # Read the content of the file
-                file_data_size = len(file_data)
+        end_time = time.time()  # End time measurement
+        transfer_time = (end_time - start_time) * 1000  # Convert to milliseconds
 
-            end_time = time.time()  # End time measurement
-            transfer_time = (end_time - start_time) * 1000  # Convert to milliseconds
+        # Calculate transfer speed in MB/s
+        file_size_mb = (file_data_size) / (1024 * 1024)  # Convert to megabytes
+        transfer_speed = file_size_mb / (transfer_time / 1000)  # Convert transfer time to seconds
+        fileList.append((transfer_time, transfer_speed))
 
-            # Calculate transfer speed in MB/s
-            file_size_mb = (file_data_size) / (1024 * 1024)  # Convert to megabytes
-            transfer_speed = file_size_mb / (transfer_time / 1000)  # Convert transfer time to seconds
-            fileList.append((transfer_time, transfer_speed))
-
-            print("File transfer completed")
-            print("Waiting for Sender response...")
+        print("File transfer completed")
+        print("Waiting for Sender response...")
 
     # Close the client socket
     client_socket.close()
@@ -60,6 +60,7 @@ def server_function():
 
     # Close the server socket
     server_socket.close()
+
 
 # Run server function directly when this file is executed
 if __name__ == "__main__":
