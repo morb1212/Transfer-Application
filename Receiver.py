@@ -28,7 +28,7 @@ def server_function():
 
             if not file_name:
                 # If the received data is empty, it means the client has disconnected
-                print("Client disconnected.")
+                print("Sender sent exit message.")
                 break
 
             print(f"Receiving file: {file_name}")
@@ -48,10 +48,8 @@ def server_function():
             transfer_speed = file_size_mb / (transfer_time / 1000)  # Convert transfer time to seconds
             fileList.append((transfer_time, transfer_speed))
 
-            # Save the received file data to the specified file path
-
-
             print("File transfer completed")
+            print("Waiting for Sender response...")
 
     # Close the client socket
     client_socket.close()
