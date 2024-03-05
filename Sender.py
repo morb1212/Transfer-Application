@@ -12,11 +12,9 @@ def client_function():
 
     # Connect to the server
     client_socket.connect((HOST, PORT))
-    with open("test.txt", "w") as out:
-        out.seek((1024 * 1024) - 1)
-        out.write("\0")  # Write a null byte at the end of the file
-        out.seek(0)  # Move the cursor to the beginning of the file
-        out.write("hello please work")
+    with open("test.txt", "wb") as out:
+        out.seek((2*1024 * 1024) - 1)
+        out.write(b'\0')
 
     FILE_PATH = "test.txt"
     client_socket.sendall(FILE_PATH.encode())
@@ -29,7 +27,6 @@ def client_function():
             break
         elif s.upper() == "Y":
             # Send the file name to the receiver
-            FILE_PATH = "received_file.txt"
             client_socket.sendall(FILE_PATH.encode())
 
             print("File transfer completed")
