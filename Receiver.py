@@ -60,6 +60,7 @@ def server_function():
 
     # Close the server socket
     server_socket.close()
+    print("Receiver end")
 
 
 # Run server function directly when this file is executed
