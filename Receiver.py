@@ -44,7 +44,7 @@ def server_function():
         transfer_time = (end_time - start_time) * 1000  # Convert to milliseconds
 
         # Calculate transfer speed in MB/s
-        file_size_mb = (file_data_size) / (1024 * 1024)  # Convert to megabytes
+        file_size_mb = file_data_size / (1024 * 1024)  # Convert to megabytes
         transfer_speed = file_size_mb / (transfer_time / 1000)  # Convert transfer time to seconds
         fileList.append((transfer_time, transfer_speed))
 
