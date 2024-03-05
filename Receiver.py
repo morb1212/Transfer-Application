@@ -2,14 +2,30 @@ import socket
 import time
 
 
+def set_congestion_control_algorithm(socket_obj, algorithm):
+    # Set TCP congestion control algorithm using socket options
+    if algorithm.lower() == "reno":
+        # Set TCP congestion control algorithm to Reno
+        socket_obj.setsockopt(socket.IPPROTO_TCP, socket.TCP_CONGESTION, b"reno")
+    elif algorithm.lower() == "cubic":
+        # Set TCP congestion control algorithm to Cubic
+        socket_obj.setsockopt(socket.IPPROTO_TCP, socket.TCP_CONGESTION, b"cubic")
+    else:
+        raise ValueError("Invalid congestion control algorithm")
+
+
 def server_function():
     # Define host and port
     HOST = '127.0.0.1'
     PORT = 12345
+    FILE_PATH = "test.txt"
     fileList = []
 
     # Create a socket object
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    # Set congestion control algorithm
+    set_congestion_control_algorithm(server_socket, "reno")  # or "cubic"
 
     # Bind the socket to the host and port
     server_socket.bind((HOST, PORT))
