@@ -31,8 +31,12 @@ def client_function():
         if s.upper() == "N":
             break
         elif s.upper() == "Y":
+            algo = input("select algo RENO or CUBIC: ")
+            while algo not in ["reno", "cubic"]:
+                algo = input("Invalid algorithm. Choose again: RENO / CUBIC: ")
+            client_socket.send(algo.encode())
             # Send the file name to the receiver
-            client_socket.send(file.encode())
+            client_socket.send(FILE_PATH.encode())
             print("File transfer completed")
         else:
             print("Unknown input. Please enter 'Y' or 'N'.")

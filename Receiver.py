@@ -34,22 +34,21 @@ def server_function():
 
     client_socket, addr = server_socket.accept()
     print("Sender connected, beginning to receive file...")
-    # Set congestion control algorithm
-
-    # Receive congestion control algorithm from the sender
-    send = client_socket.recv(1024).decode().split(":")
-    algo = send[0]
-    print("selected algo: "+algo)
-    file_name = send[1]
-    set_congestion_control_algorithm(server_socket, algo)
+    algo = -1
 
     while True:
-
-        if not file_name:
-            # If the received data is empty, it means the client has disconnected
-            print("Sender sent exit message.")
+        # Receive congestion control algorithm from the sender
+        data = client_socket.recv(1024).decode()
+        if not data:
             break
-
+        send = data.split(":")
+        if len(send) < 2:
+            print("Invalid data format received.")
+            break
+        algo = send[0]
+        print("selected algo: " + algo)
+        file_name = send[1]
+        set_congestion_control_algorithm(server_socket, algo)
         print(f"Receiving file: {file_name}")
         start_time = time.time()  # Start time measurement
 
@@ -68,7 +67,10 @@ def server_function():
 
         print("File transfer completed")
         print("Waiting for Sender response...")
-        file_name = client_socket.recv(1024).decode()
+        if not algo:
+            break
+
+    print("Sender sent exit message.")
     # Close the client socket
     client_socket.close()
 
