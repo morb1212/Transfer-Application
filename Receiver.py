@@ -39,7 +39,7 @@ def server_function():
     # Receive congestion control algorithm from the sender
     send = client_socket.recv(1024).decode().split(":")
     algo = send[0]
-    print("selecteed algo: "+algo)
+    print("selected algo: "+algo)
     file_name = send[1]
     set_congestion_control_algorithm(server_socket, algo)
 
