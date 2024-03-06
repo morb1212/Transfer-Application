@@ -4,28 +4,24 @@ import time
 
 def set_congestion_control_algorithm(socket_obj, algorithm):
     # Set TCP congestion control algorithm using socket options
-    if algorithm.lower() == "reno":
+    if algorithm == "reno":
         # Set TCP congestion control algorithm to Reno
         socket_obj.setsockopt(socket.IPPROTO_TCP, socket.TCP_CONGESTION, b"reno")
-    elif algorithm.lower() == "cubic":
+    elif algorithm == "cubic":
         # Set TCP congestion control algorithm to Cubic
         socket_obj.setsockopt(socket.IPPROTO_TCP, socket.TCP_CONGESTION, b"cubic")
     else:
-        raise ValueError("Invalid congestion control algorithm")
+        print("Invalid congestion control algorithm")
 
 
 def server_function():
     # Define host and port
     HOST = '127.0.0.1'
     PORT = 12345
-    FILE_PATH = "test.txt"
     fileList = []
 
     # Create a socket object
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    # Set congestion control algorithm
-    set_congestion_control_algorithm(server_socket, "reno")  # or "cubic"
 
     # Bind the socket to the host and port
     server_socket.bind((HOST, PORT))
@@ -38,10 +34,16 @@ def server_function():
 
     client_socket, addr = server_socket.accept()
     print("Sender connected, beginning to receive file...")
+    # Set congestion control algorithm
+
+    # Receive congestion control algorithm from the sender
+    send = client_socket.recv(1024).decode().split(":")
+    algo = send[0]
+    print("selecteed algo: "+algo)
+    file_name = send[1]
+    set_congestion_control_algorithm(server_socket, algo)
 
     while True:
-        # Receive file name from the sender
-        file_name = client_socket.recv(1024).decode()
 
         if not file_name:
             # If the received data is empty, it means the client has disconnected
@@ -66,7 +68,7 @@ def server_function():
 
         print("File transfer completed")
         print("Waiting for Sender response...")
-
+        file_name = client_socket.recv(1024).decode()
     # Close the client socket
     client_socket.close()
 

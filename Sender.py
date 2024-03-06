@@ -13,11 +13,16 @@ def client_function():
     # Connect to the server
     client_socket.connect((HOST, PORT))
     with open("test.txt", "wb") as out:
-        out.seek((2*1024 * 1024) - 1)
+        out.seek((2 * 1024 * 1024) - 1)
         out.write(b'\0')
 
-    FILE_PATH = "test.txt"
-    client_socket.sendall(FILE_PATH.encode())
+    algo = input("select algo RENO or CUBIC: ")
+    while algo not in ["reno", "cubic"]:
+        algo = input("Invalid algorithm. Choose again: RENO / CUBIC: ")
+    client_socket.send(algo.encode())
+    FILE_PATH = ":test.txt"
+    file="test.txt"
+    client_socket.send(FILE_PATH.encode())
     print("File transfer completed")
     while True:
         # User input loop to control sending the file
@@ -27,8 +32,7 @@ def client_function():
             break
         elif s.upper() == "Y":
             # Send the file name to the receiver
-            client_socket.sendall(FILE_PATH.encode())
-
+            client_socket.send(file.encode())
             print("File transfer completed")
         else:
             print("Unknown input. Please enter 'Y' or 'N'.")
