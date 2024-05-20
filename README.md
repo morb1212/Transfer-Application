@@ -46,6 +46,7 @@ Both the TCP server and client scripts include functionality to select a congest
 - `set_congestion_control_algorithm(socket_obj, algorithm)`: Sets the congestion control algorithm for a TCP socket.
 
 ## Usage
+run server and then client
 
 1. Start the appropriate server script (`rudp_server.py` or `tcp_server.py`).
 2. Start the corresponding client script (`rudp_client.py` or `tcp_client.py`).
@@ -56,18 +57,4 @@ Both the TCP server and client scripts include functionality to select a congest
 Ensure that both the client and server are running on the same network and have network connectivity.
 ## Test
 
-To ensure the functionality of the file transfer application, the following tests can be performed:
-
-1. **RUDP File Transfer Test:**
-    - Start the RUDP server (`rudp_server.py`) 
-    - Start the RUDP client (`rudp_client.py`)
-    - Initiate file transfer from the client to the server.
-    - Verify that the file is received successfully on the server side.
-    - Check for any errors or timeouts during the transfer process.
-
-2. **TCP File Transfer Test:**
-    - Start the TCP server (`tcp_server.py`)
-    - Start the TCP client (`tcp_client.py`)
-    - Initiate file transfer from the client to the server.
-    - Verify that the file is received successfully on the server side.
-    - Check for any errors or timeouts during the transfer process.
+RUN TestFileTransfer.py
