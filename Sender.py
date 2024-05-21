@@ -1,6 +1,16 @@
 import socket
 import time
 
+def set_congestion_control_algorithm(socket_obj, algorithm):
+    # Set TCP congestion control algorithm using socket options
+    if algorithm == "reno":
+        # Set TCP congestion control algorithm to Reno
+        socket_obj.setsockopt(socket.IPPROTO_TCP, socket.TCP_CONGESTION, b"reno")
+    elif algorithm == "cubic":
+        # Set TCP congestion control algorithm to Cubic
+        socket_obj.setsockopt(socket.IPPROTO_TCP, socket.TCP_CONGESTION, b"cubic")
+    else:
+        print("Invalid congestion control algorithm")
 
 def client_function():
     # Define host and port
@@ -35,6 +45,7 @@ def client_function():
             while algo not in ["reno", "cubic"]:
                 algo = input("Invalid algorithm. Choose again: RENO / CUBIC: ")
             client_socket.send(algo.encode())
+            set_congestion_control_algorithm(client_socket, algo)
             # Send the file name to the receiver
             client_socket.send(FILE_PATH.encode())
             print("File transfer completed")

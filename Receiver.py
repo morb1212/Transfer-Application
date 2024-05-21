@@ -3,13 +3,17 @@ import time
 
 
 def set_congestion_control_algorithm(socket_obj, algorithm):
+    print("received with: "+algorithm+ ", choose the algo for the bonus")
+    algo = input("select algo RENO or CUBIC: ")
+    while algo not in ["reno", "cubic"]:
+        algo = input("Invalid algorithm. Choose again: RENO / CUBIC: ")
     # Set TCP congestion control algorithm using socket options
-    if algorithm == "reno":
+    if algo == "cubic":
         # Set TCP congestion control algorithm to Reno
-        socket_obj.setsockopt(socket.IPPROTO_TCP, socket.TCP_CONGESTION, b"reno")
-    elif algorithm == "cubic":
-        # Set TCP congestion control algorithm to Cubic
         socket_obj.setsockopt(socket.IPPROTO_TCP, socket.TCP_CONGESTION, b"cubic")
+    elif algo == "reno":
+        # Set TCP congestion control algorithm to Cubic
+        socket_obj.setsockopt(socket.IPPROTO_TCP, socket.TCP_CONGESTION, b"reno")
     else:
         print("Invalid congestion control algorithm")
 
@@ -46,7 +50,6 @@ def server_function():
             print("Invalid data format received.")
             break
         algo = send[0]
-        print("selected algo: " + algo)
         file_name = send[1]
         set_congestion_control_algorithm(server_socket, algo)
         print(f"Receiving file: {file_name}")
