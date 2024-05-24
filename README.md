@@ -48,8 +48,8 @@ Both the TCP server and client scripts include functionality to select a congest
 ## Usage
 run server and then client
 
-1. Start the appropriate server script (`rudp_server.py` or `tcp_server.py`).
-2. Start the corresponding client script (`rudp_client.py` or `tcp_client.py`).
+1. Start the appropriate server script (`RUDP_Receiver.py` or `Receiver.py`).
+2. Start the corresponding client script (`RUDP_Sender.py` or `Sender.py`).
 3. Follow the on-screen instructions to initiate file transfer and select congestion control algorithms.
 
 ## Note
