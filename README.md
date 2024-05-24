@@ -58,4 +58,4 @@ Ensure that both the client and server are running on the same network and have 
 ## Test
 
 RUN TestFileTransfer.py
-Expected to see received_test_file, and no error messages
+Expected result: received_test_file and no error messages upon test complition
