@@ -44,8 +44,8 @@ def client_function():
             algo = input("select algo RENO or CUBIC: ")
             while algo not in ["reno", "cubic"]:
                 algo = input("Invalid algorithm. Choose again: RENO / CUBIC: ")
-            client_socket.send(algo.encode())
             set_congestion_control_algorithm(client_socket, algo)
+            client_socket.send(algo.encode())
             # Send the file name to the receiver
             client_socket.send(FILE_PATH.encode())
             print("File transfer completed")
